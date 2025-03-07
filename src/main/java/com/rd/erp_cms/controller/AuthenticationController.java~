@@ -1,0 +1,56 @@
+package com.rd.erp_cms.controller;
+
+import com.rd.erp_cms.dto.LoginDTO;
+import com.rd.erp_cms.model.User;
+import com.rd.erp_cms.service.AuthenticationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+
+@RestController
+@RequestMapping("/auth")
+public class AuthenticationController {
+    @Autowired
+    private AuthenticationService authenticationService;
+
+    @PostMapping("/login")
+    public Object login(@RequestBody LoginDTO loginDTO) {
+        // Try to authenticate user based on either username or email
+        User user = authenticationService.authenticate(loginDTO.getUsernameOrEmail(), loginDTO.getPassword());
+
+        // If authentication is successful, return the user details and role
+        if (user != null) {
+            return new UserResponse(user.getUserId(), user.getEmail(), user.getRole());
+        } else {
+            return "Invalid username/email or password!";
+        }
+    }
+
+    // Response DTO to send user data and role
+    public static class UserResponse {
+        private String userId;
+        private String email;
+        private User.Role role;
+
+        public UserResponse(String userId, String email, User.Role role) {
+            this.userId = userId;
+            this.email = email;
+            this.role = role;
+        }
+
+        public String getUserId() {
+            return userId;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public User.Role getRole() {
+            return role;
+        }
+    }
+}
