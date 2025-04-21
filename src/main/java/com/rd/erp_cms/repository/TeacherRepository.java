@@ -14,4 +14,6 @@ public interface TeacherRepository extends JpaRepository<Teacher, Long> {
     void deleteByUserId(String userId);
 
     boolean existsByUserId(String userId);
+
+    long count();
 }

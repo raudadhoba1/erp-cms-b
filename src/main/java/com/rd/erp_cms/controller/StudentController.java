@@ -18,14 +18,13 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
-    // 1. Create a new student (POST)
+
     @PostMapping("/add")
     public ResponseEntity<Student> createStudent(@RequestBody StudentUserDTO studentUserDTO) {
         Student savedStudent = studentService.createStudent(studentUserDTO);
         return new ResponseEntity<>(savedStudent, HttpStatus.CREATED);
     }
 
-    // 2. Get student by UserID (GET) for user profile data
     @GetMapping("/{userID}")
     public ResponseEntity<Student> getStudentByUserId(@PathVariable String userID) {
         Optional<Student> student = studentService.getStudentByUserId(userID);
@@ -35,7 +34,7 @@ public class StudentController {
 
 
 
-    // 3. Update student (PUT)
+
     @PutMapping("/update/{userId}")
     public ResponseEntity<Student> updateStudent(@PathVariable String userId, @RequestBody Student student) {
         Optional<Student> updatedStudent = studentService.updateStudent(userId, student);
@@ -43,7 +42,6 @@ public class StudentController {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    // 4. Delete student (DELETE)
     @DeleteMapping("delete/{userId}")
     public ResponseEntity<Void> deleteStudent(@PathVariable String userId) {
         boolean isDeleted = studentService.deleteStudent(userId);
@@ -51,7 +49,7 @@ public class StudentController {
                 : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    // Optional: List all students (GET)
+
     @GetMapping("/all")
     public ResponseEntity<List<Student>> getAllStudents() {
         List<Student> students = studentService.getAllStudents();

@@ -1,18 +1,28 @@
 package com.rd.erp_cms.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
+
+import java.util.List;
 
 @Configuration
-public class WebConfig implements WebMvcConfigurer {
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**") // Allows CORS for all endpoints
-                .allowedOrigins("http://localhost:5173") // You can specify allowed origins
-                .allowedMethods("GET", "POST", "PUT", "DELETE") // Allowed methods
-                .allowedHeaders("*") // Allow all headers
-                .allowCredentials(true) // Allow credentials (cookies, etc.)
-                .maxAge(3600); // Cache pre-flight response for 1 hour
+public class WebConfig {
+    @Bean
+    public CorsFilter corsFilter() {
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        CorsConfiguration config = new CorsConfiguration();
+
+        // Specify allowed origins (DO NOT use "*")
+        config.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:*", "http://localhost:3000","http://192.168.1.37:3000"));
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+        config.setAllowedHeaders(List.of("*"));
+        config.setAllowCredentials(true); // Allow cookies/sessions
+        config.setMaxAge(3600L); // Cache pre-flight requests for 1 hour
+
+        source.registerCorsConfiguration("/**", config);
+        return new CorsFilter(source);
     }
 }

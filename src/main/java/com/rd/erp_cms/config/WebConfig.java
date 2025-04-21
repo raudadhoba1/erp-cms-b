@@ -16,7 +16,7 @@ public class WebConfig {
         CorsConfiguration config = new CorsConfiguration();
 
         // Specify allowed origins (DO NOT use "*")
-        config.setAllowedOrigins(List.of("http://localhost:5173"));
+        config.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:*", "http://localhost:3000","http://192.168.1.37:3000","http://192.168.1.35:3000"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true); // Allow cookies/sessions

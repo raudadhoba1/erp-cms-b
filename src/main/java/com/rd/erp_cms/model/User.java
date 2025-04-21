@@ -21,6 +21,9 @@ public class User {
     @Column(nullable = false)
     private Role role;
 
+    @Column(name = "organization", nullable = false)
+    private String organization;
+
     public enum Role {
         ADMIN, TEACHER, STUDENT,LIBRARIAN
     }
@@ -55,6 +58,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(String organization) {
+        this.organization = organization;
     }
 
     public Role getRole() {
